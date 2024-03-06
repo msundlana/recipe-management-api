@@ -14,14 +14,12 @@ public class RecipeServiceImpl implements RecipeService{
 
     @Autowired
     private RecipeRepository recipeRepository;
-
     private static final ModelMapper mapper = new ModelMapper();
-
 
     @Override
     public List<RecipeDto> getAllRecipes() {
         var recipes = recipeRepository.findAll();
-        return recipes.stream().map(recipe -> convertToDto(recipe)).toList();
+        return recipes.stream().map(this:: convertToDto).toList();
     }
 
     @Override
@@ -37,7 +35,7 @@ public class RecipeServiceImpl implements RecipeService{
         var recipes = recipeRepository.findFilteredRecipes(vegetarian, servings,
                 includedIngredients, excludedIngredients, searchText);
 
-        return recipes.stream().map(recipe -> convertToDto(recipe)).toList();
+        return recipes.stream().map(this:: convertToDto).toList();
     }
 
     @Override
@@ -60,9 +58,8 @@ public class RecipeServiceImpl implements RecipeService{
     }
 
     private Recipe findRecipeById(long id){
-        var recipe = recipeRepository.findById(id).orElseThrow(()
+        return recipeRepository.findById(id).orElseThrow(()
                 -> new RecipeNotFoundException("Recipe not found with id: " + id));
-        return recipe;
     }
 
     private Recipe convertToEntity(RecipeDto recipeDto) {
