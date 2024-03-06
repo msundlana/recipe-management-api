@@ -15,8 +15,7 @@ public class RecipeServiceImpl implements RecipeService{
     @Autowired
     private RecipeRepository recipeRepository;
 
-    @Autowired
-    private ModelMapper mapper;
+    private static final ModelMapper mapper = new ModelMapper();
 
 
     @Override

@@ -1,0 +1,65 @@
+databaseChangeLog:
+- changeSet:
+    id: 1709731778078-1
+    author: merciful.sundlana (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: recipe_id
+            type: BIGINT
+        - column:
+            name: ingredient
+            type: VARCHAR(255)
+        tableName: ingredients
+- changeSet:
+    id: 1709731778078-2
+    author: merciful.sundlana (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: recipesPK
+            name: id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: instructions
+            type: TEXT
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: servings
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: vegetarian
+            type: BOOLEAN
+        tableName: recipes
+- changeSet:
+    id: 1709731778078-3
+    author: merciful.sundlana (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: recipe_id
+        baseTableName: ingredients
+        constraintName: FK7p08vcn6wf7fd6qp79yy2jrwg
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: recipes
+        validate: true
+

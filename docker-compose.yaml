@@ -1,30 +1,23 @@
-version: '3.7'
+version: '3.8'
 
 services:
+  recipe-postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: recipe_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 
   recipe-management:
-    image: in28min/mmv3-currency-exchange-service:0.0.1-SNAPSHOT
-    mem_limit: 700m
+    image: msundlana/recipe-management-api:0.0.1-SNAPSHOT
     ports:
-      - "8000:8000"
-    networks:
-      - currency-network
+      - "8080:8080"
     depends_on:
-      - naming-server
-    environment:
-      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka
-      MANAGEMENT.ZIPKIN.TRACING.ENDPOINT: http://zipkin-server:9411/api/v2/spans
+      - recipe-postgres
 
-#docker run -p 9411:9411 openzipkin/zipkin:2.23
-
-  zipkin-server:
-    image: openzipkin/zipkin:2.23
-    mem_limit: 300m
-    ports:
-      - "9411:9411"
-    networks:
-      - recipe-networ
-    restart: always #Restart if there is a problem starting up
-
-networks:
-  recipe-network:
+volumes:
+  pgdata:
