@@ -1,6 +1,5 @@
 package com.github.msundlana.recipemanagementservice;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.msundlana.recipemanagementservice.models.RecipeDto;
 import com.github.msundlana.recipemanagementservice.services.RecipeSearchService;
 import static org.mockito.Mockito.when;
@@ -30,10 +29,7 @@ public class RecipeSearchControllerIntegrationTest {
     @MockBean
     RecipeSearchService recipeSearchService;
 
-    private String basePath = "/api/recipes";
-
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final String basePath = "/api/recipes";
 
     @Test
     public void testFilteredRecipesByAllCriteria() throws Exception {

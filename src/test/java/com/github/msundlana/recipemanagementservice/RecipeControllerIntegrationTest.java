@@ -30,7 +30,7 @@ public class RecipeControllerIntegrationTest {
     @MockBean
     RecipeService recipeService;
 
-    private String basePath = "/api/recipes";
+    private final String basePath = "/api/recipes";
 
     @Autowired
     private ObjectMapper objectMapper;
