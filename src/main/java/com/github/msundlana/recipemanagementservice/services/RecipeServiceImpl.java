@@ -4,6 +4,7 @@ import com.github.msundlana.recipemanagementservice.exception.RecipeNotFoundExce
 import com.github.msundlana.recipemanagementservice.models.Recipe;
 import com.github.msundlana.recipemanagementservice.models.RecipeDto;
 import com.github.msundlana.recipemanagementservice.repositories.RecipeRepository;
+import com.github.msundlana.recipemanagementservice.utilities.RecipeHelper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,29 +20,20 @@ public class RecipeServiceImpl implements RecipeService{
     @Override
     public List<RecipeDto> getAllRecipes() {
         var recipes = recipeRepository.findAll();
-        return recipes.stream().map(this:: convertToDto).toList();
+        return recipes.stream().map(RecipeHelper:: convertToDto).toList();
     }
 
     @Override
     public RecipeDto getRecipeById(Long id) {
         var recipe = findRecipeById(id);
-        return convertToDto(recipe);
+        return RecipeHelper.convertToDto(recipe);
     }
 
-    @Override
-    public List<RecipeDto> filterRecipes(boolean vegetarian, int servings,
-                                         List<String> includedIngredients, List<String> excludedIngredients, String searchText) {
-
-        var recipes = recipeRepository.findFilteredRecipes(vegetarian, servings,
-                includedIngredients, excludedIngredients, searchText);
-
-        return recipes.stream().map(this:: convertToDto).toList();
-    }
 
     @Override
     public RecipeDto addRecipe(RecipeDto recipeDto) {
-        var recipe = recipeRepository.save(convertToEntity(recipeDto));
-        return convertToDto(recipe);
+        var recipe = recipeRepository.save(RecipeHelper.convertToEntity(recipeDto));
+        return RecipeHelper.convertToDto(recipe);
     }
 
     @Override
@@ -49,7 +41,7 @@ public class RecipeServiceImpl implements RecipeService{
         var recipe = findRecipeById(id);
         mapper.map(recipeDto,recipe);
         var savedRecipe = recipeRepository.save(recipe);
-        return convertToDto(savedRecipe);
+        return RecipeHelper.convertToDto(savedRecipe);
     }
 
     @Override
@@ -62,11 +54,4 @@ public class RecipeServiceImpl implements RecipeService{
                 -> new RecipeNotFoundException("Recipe not found with id: " + id));
     }
 
-    private Recipe convertToEntity(RecipeDto recipeDto) {
-        return mapper.map(recipeDto, Recipe.class);
-    }
-
-    private RecipeDto convertToDto(Recipe recipe) {
-        return mapper.map(recipe, RecipeDto.class);
-    }
 }

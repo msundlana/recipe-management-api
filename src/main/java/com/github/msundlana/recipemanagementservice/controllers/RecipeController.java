@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/recipes")
+@RequestMapping("${api.base}/recipes")
 public class RecipeController {
 
     @Autowired
@@ -20,18 +20,8 @@ public class RecipeController {
 
     @GetMapping
     public ResponseEntity<List<RecipeDto>> getAllRecipes() {
-        List<RecipeDto> recipes = recipeService.getAllRecipes();
+       var recipes = recipeService.getAllRecipes();
         return new ResponseEntity<>(recipes, HttpStatus.OK);
-    }
-
-    @GetMapping("/filter")
-    public ResponseEntity<List<RecipeDto>> filterRecipes(@RequestParam(required = false) boolean vegetarian,
-                                                      @RequestParam(required = false) @Positive int servings,
-                                                      @RequestParam(required = false) List<String> includedIngredients,
-                                                      @RequestParam(required = false) List<String> excludedIngredients,
-                                                      @RequestParam(required = false) String searchText) {
-        List<RecipeDto> filteredRecipes = recipeService.filterRecipes(vegetarian, servings, includedIngredients, excludedIngredients, searchText);
-        return new ResponseEntity<>(filteredRecipes, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

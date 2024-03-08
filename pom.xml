@@ -27,13 +27,7 @@
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-		</dependency>
-		<!-- Spring Data REST to build hypermedia-driven REST web services
-		that connect to Spring Data repositories – all using HAL as the driving hypermedia type-->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-rest</artifactId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
 		<!-- Spring Boot Starter Actuator to monitor and manage your application
@@ -55,13 +49,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-
-		<!--Spring Boot Starter Hateoas eases the creation of RESTful APIs
-		 that follow the HATEOAS principle when working with Spring / Spring MVC.-->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-hateoas</artifactId>
 		</dependency>
 
 		<!-- Spring Boot Starter Validation for Bean Validation with Hibernate validator. -->
@@ -136,11 +123,17 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 		<!-- JUnit Jupiter API for testing -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
-			<version>5.8.2</version>
+			<version>5.10.2</version>
 			<scope>test</scope>
 		</dependency>
 

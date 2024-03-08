@@ -1,5 +1,6 @@
 package com.github.msundlana.recipemanagementservice.models;
 
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +24,7 @@ public class RecipeDto {
 
     private String instructions;
 
+    @Positive
     private int servings;
 
     private boolean vegetarian;

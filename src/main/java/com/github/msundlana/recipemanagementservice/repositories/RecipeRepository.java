@@ -19,5 +19,6 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
                                      @Param("includedIngredients") List<String> includedIngredients,
                                      @Param("excludedIngredients") List<String> excludedIngredients,
                                      @Param("searchText") String searchText);
+
 }
 

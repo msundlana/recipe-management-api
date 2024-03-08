@@ -1,6 +1,7 @@
 package com.github.msundlana.recipemanagementservice.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class Recipe {
     private String instructions;
 
     @Column(nullable = false)
+    @Positive
     private int servings;
 
     @Column(nullable = false)

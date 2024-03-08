@@ -9,8 +9,6 @@ public interface RecipeService {
 
     public RecipeDto getRecipeById(Long id) ;
 
-    public List<RecipeDto> filterRecipes(boolean vegetarian, int servings, List<String> includedIngredients, List<String> excludedIngredients, String searchText);
-
     public RecipeDto addRecipe(RecipeDto recipeDto);
 
     public RecipeDto updateRecipe(long id,RecipeDto recipeDto);
