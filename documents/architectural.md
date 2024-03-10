@@ -83,7 +83,13 @@
 
 - DAO (Data Access Object) and DTO (Data Transfer Object) patterns are used in Object Relational Mapping.
 - DAO acts as a bridge between the database and the application. DTO acts as a data store from where the data is received
-  and transferred to different layers i.e., to the DAO application
+  and transferred to different layers i.e., to the DAO application.
+
+#### Pagination:
+
+- Pagination is an essential concept when dealing with endpoints that return large collections of resources.
+    The Recipe application has the potential of dealing with an unlimited number of recipes.
+- Pagination allows for efficient retrieval and presentation of data by breaking it down into smaller, manageable chunks called “pages”.
 
 ##### Exception Handling:
 
