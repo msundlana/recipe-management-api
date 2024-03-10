@@ -2,14 +2,16 @@ package com.github.msundlana.recipemanagementservice.controllers;
 
 import com.github.msundlana.recipemanagementservice.models.RecipeDto;
 import com.github.msundlana.recipemanagementservice.services.RecipeService;
+import com.github.msundlana.recipemanagementservice.utilities.RecipeHelper;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
 @RequestMapping("${api.base}/recipes")
@@ -19,8 +21,10 @@ public class RecipeController {
     private RecipeService recipeService;
 
     @GetMapping
-    public ResponseEntity<List<RecipeDto>> getAllRecipes() {
-       var recipes = recipeService.getAllRecipes();
+    public ResponseEntity<Page<RecipeDto>> getAllRecipes(@RequestParam(required = false, defaultValue = "0") @PositiveOrZero Integer page,
+                                                         @RequestParam(required = false, defaultValue = "20") @Positive Integer size,
+                                                         @RequestParam(required = false) String... sort) {
+       var recipes = recipeService.getAllRecipes(RecipeHelper.getPageRequest(page,size,sort));
         return new ResponseEntity<>(recipes, HttpStatus.OK);
     }
 

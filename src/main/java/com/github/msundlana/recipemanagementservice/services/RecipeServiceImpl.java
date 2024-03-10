@@ -7,6 +7,8 @@ import com.github.msundlana.recipemanagementservice.repositories.RecipeRepositor
 import com.github.msundlana.recipemanagementservice.utilities.RecipeHelper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -18,9 +20,9 @@ public class RecipeServiceImpl implements RecipeService{
     private static final ModelMapper mapper = new ModelMapper();
 
     @Override
-    public List<RecipeDto> getAllRecipes() {
-        var recipes = recipeRepository.findAll();
-        return recipes.stream().map(RecipeHelper:: convertToDto).toList();
+    public Page<RecipeDto> getAllRecipes(Pageable pageable) {
+        return recipeRepository.findAll(pageable)
+                .map(RecipeHelper::convertToDto);
     }
 
     @Override

@@ -7,15 +7,18 @@ import com.github.msundlana.recipemanagementservice.repositories.RecipeRepositor
 import com.github.msundlana.recipemanagementservice.services.RecipeService;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
-import static org.mockito.ArgumentMatchers.any;
 
 import com.github.msundlana.recipemanagementservice.services.RecipeServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,15 +78,15 @@ public class RecipeServiceTest {
                 .servings(2)
                 .instructions("Test instructions for test recipe 2")
                 .vegetarian(false).build());
+        var page = new PageImpl<>(mockRecipes);
 
-        when(recipeRepository.findAll()).thenReturn(mockRecipes);
+        when(recipeRepository.findAll(any(PageRequest.class))).thenReturn(page);
 
-        var results = recipeService.getAllRecipes();
-
-        assertNotNull(results);
-        assertEquals(2, results.size());
-        assertEquals("Test Recipe 1", results.get(0).getName());
-        assertEquals("Test Recipe 2", results.get(1).getName());
+        var result = recipeService.getAllRecipes(PageRequest.of(0, 10));
+        assertNotNull(result.getContent());
+        assertEquals(2, result.getContent().size());
+        assertEquals("Test Recipe 1", result.getContent().get(0).getName());
+        assertEquals("Test Recipe 2", result.getContent().get(1).getName());
     }
 
     @Test

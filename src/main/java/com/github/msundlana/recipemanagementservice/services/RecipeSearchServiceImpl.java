@@ -5,6 +5,8 @@ import com.github.msundlana.recipemanagementservice.repositories.RecipeRepositor
 import com.github.msundlana.recipemanagementservice.utilities.RecipeHelper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,15 +15,14 @@ import java.util.List;
 public class RecipeSearchServiceImpl implements RecipeSearchService{
     @Autowired
     private RecipeRepository recipeRepository;
-    private static final ModelMapper mapper = new ModelMapper();
     @Override
-    public List<RecipeDto> searchFilteredRecipes(boolean vegetarian, Integer servings,
-                                                 List<String> includedIngredients,
-                                                 List<String> excludedIngredients, String searchText) {
-        servings = servings==null?-1:servings;
-        var recipes = recipeRepository.findFilteredRecipes(vegetarian, servings,
-                includedIngredients, excludedIngredients, searchText);
+    public Page<RecipeDto> searchFilteredRecipes(Boolean vegetarian, String searchText, Integer servings,
+                                                 List<String> includedIngredients, List<String> excludedIngredients,
+                                                 Pageable pageable) {
+        return recipeRepository.findFilteredRecipes(
+                vegetarian, servings,
+                includedIngredients, excludedIngredients,searchText,pageable)
+                .map(RecipeHelper::convertToDto);
 
-        return recipes.stream().map(RecipeHelper:: convertToDto).toList();
     }
 }

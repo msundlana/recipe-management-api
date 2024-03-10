@@ -4,14 +4,18 @@ import com.github.msundlana.recipemanagementservice.models.Recipe;
 import com.github.msundlana.recipemanagementservice.repositories.RecipeRepository;
 import com.github.msundlana.recipemanagementservice.services.RecipeSearchService;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 import com.github.msundlana.recipemanagementservice.services.RecipeSearchServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.mockito.InjectMocks;
@@ -29,153 +33,191 @@ public class RecipeSearchServiceTest {
     @InjectMocks
     private RecipeSearchService recipeSearchService = new RecipeSearchServiceImpl();
 
-        @Test
-        public void testNonFilteredRecipes() {
-
-            var mockRecipes = getMockRecipes();
-
-            when(recipeRepository.findFilteredRecipes(false,-1,
-                    null, null,null)).thenReturn(mockRecipes);
-
-            var filteredRecipes = recipeSearchService.searchFilteredRecipes(false,null,
-                    null, null,null);
-
-            assertEquals(2, filteredRecipes.size());
-        }
-
-        @Test
-        public void testFilteredIsVegetarianRecipes() {
-
-            var mockRecipes = getMockRecipes();
-            var isVegetarian = true;
-
-            when(recipeRepository.findFilteredRecipes(isVegetarian,-1,
-                    null, null,null)).thenReturn(List.of(mockRecipes.get(0)));
-
-            var filteredRecipes = recipeSearchService.searchFilteredRecipes(isVegetarian,null,
-                    null, null,null);
-
-            assertEquals(1, filteredRecipes.size());
-            assertEquals("Test Recipe 1", filteredRecipes.get(0).getName());
-            assertTrue(filteredRecipes.get(0).isVegetarian());
-        }
-
-        @Test
-        public void testFilteredRecipesByServings() {
-
-            var mockRecipes = getMockRecipes();
-            var servings = 4;
-
-            when(recipeRepository.findFilteredRecipes(false,servings,
-                    null, null,null)).thenReturn(List.of(mockRecipes.get(0)));
-
-            var filteredRecipes = recipeSearchService.searchFilteredRecipes(false,servings,
-                    null, null,null);
-
-            assertEquals(1, filteredRecipes.size());
-            assertEquals("Test Recipe 1", filteredRecipes.get(0).getName());
-            assertEquals(servings,filteredRecipes.get(0).getServings());
-
-        }
-
     @Test
-    public void testFilteredRecipesByInstruction() {
+    public void testNonFilteredRecipes() {
 
         var mockRecipes = getMockRecipes();
-        var searchText = "oven";
 
-        when(recipeRepository.findFilteredRecipes(false,-1,
-                null, null,searchText)).thenReturn(List.of(mockRecipes.get(1)));
+        var page = new PageImpl<>(mockRecipes);
 
-        var filteredRecipes = recipeSearchService.searchFilteredRecipes(false,-1,
-                null, null,searchText);
-
-        assertEquals(1, filteredRecipes.size());
-        assertEquals("Test Recipe 2", filteredRecipes.get(0).getName());
-        assertTrue(filteredRecipes.get(0).getInstructions().contains(searchText));
-
+        when(recipeRepository.findFilteredRecipes(
+                null, null, null, null,null,PageRequest.of(0, 20)))
+                .thenReturn(page);
+        var result = recipeSearchService.searchFilteredRecipes(null
+                , null, null, null, null, PageRequest.of(0, 20));
+        assertNotNull(result.getContent());
+        assertEquals(2, result.getContent().size());
     }
 
     @Test
-    public void testFilteredRecipesByIncludedIngredients() {
+    public void testFindFilteredRecipes() {
+        var recipes = Collections.singletonList(getMockRecipes().get(0));
+        var page = new PageImpl<>(recipes);
 
-        var mockRecipes = getMockRecipes();
-        var includedIngredients = List.of("potato");
+        when(recipeRepository.findFilteredRecipes(
+                anyBoolean(), anyInt(), anyList(), anyList(),anyString(),any()))
+                .thenReturn(page);
 
-        when(recipeRepository.findFilteredRecipes(false,-1,
-                includedIngredients , null,null)).thenReturn(mockRecipes);
+        var result = recipeSearchService.searchFilteredRecipes(
+                true, "instructions", 4, Collections.emptyList(), Collections.emptyList(), PageRequest.of(0, 20));
 
-        var filteredRecipes = recipeSearchService.searchFilteredRecipes(false,-1,
-                includedIngredients, null,null);
-
-        assertEquals(2, filteredRecipes.size());
-        assertEquals("Test Recipe 1", filteredRecipes.get(0).getName());
-        assertEquals("Test Recipe 2", filteredRecipes.get(1).getName());
-
+        assertNotNull(result.getContent());
+        assertEquals(recipes.size(), result.getContent().size());
+        assertEquals(1L, result.getContent().get(0).getId());
+        assertEquals("Test Recipe 1", result.getContent().get(0).getName());
     }
 
     @Test
-    public void testFilteredRecipesByIncludedIngredients_Empty() {
-
-        var includedIngredients = List.of("potato");
-        when(recipeRepository.findFilteredRecipes(false,-1,
-                includedIngredients , null,null)).thenReturn(List.of());
-
-        var filteredRecipes = recipeSearchService.searchFilteredRecipes(false,-1,
-                includedIngredients, null,null);
-
-        assertEquals(0, filteredRecipes.size());
-    }
-
-    @Test
-    public void testFilteredRecipesByExcludesIngredients() {
-
-        var mockRecipes = getMockRecipes();
-        var excludedIngredients = List.of("lamb");
-
-        when(recipeRepository.findFilteredRecipes(false,-1,
-                null, excludedIngredients,null)).thenReturn(List.of(mockRecipes.get(0)));
-
-        var filteredRecipes = recipeSearchService.searchFilteredRecipes(false,-1,
-                null, excludedIngredients,null);
-
-        assertEquals(1, filteredRecipes.size());
-        assertEquals("Test Recipe 1", filteredRecipes.get(0).getName());
-    }
-
-    @Test
-    public void testFilteredRecipesByExcludedIngredients_Empty() {
-        var excludedIngredients = List.of("lamb");
-        when(recipeRepository.findFilteredRecipes(false,-1,
-                null, excludedIngredients,null)).thenReturn(List.of());
-
-       var filteredRecipes = recipeSearchService.searchFilteredRecipes(false,-1,
-               null, excludedIngredients,null);
-        assertEquals(0, filteredRecipes.size());
-    }
-
-    @Test
-    public void testFilteredRecipesByAllCriteria() {
-        var servings = 4;
+    public void testFilteredIsVegetarianRecipes() {
         var isVegetarian = true;
-        var searchText = "oven";
-        var includedIngredients = List.of("potato");
-        var excludedIngredients = List.of("lamb");
+        var mockRecipes = Collections.singletonList(getMockRecipes().get(0));
+        var page = new PageImpl<>(mockRecipes);
 
-        var mockRecipes = getMockRecipes();
+        when(recipeRepository.findFilteredRecipes(
+                isVegetarian, null, null, null,null,PageRequest.of(0, 20)))
+                .thenReturn(page);
+        var result = recipeSearchService.searchFilteredRecipes(isVegetarian
+                , null, null, null, null, PageRequest.of(0, 20));
 
-        when(recipeRepository.findFilteredRecipes(isVegetarian,servings,
-                includedIngredients, excludedIngredients,searchText)).thenReturn(List.of(mockRecipes.get(0)));
+        assertNotNull(result.getContent());
+        assertEquals(1, result.getContent().size());
+        assertEquals("Test Recipe 1", result.getContent().get(0).getName());
+        assertTrue(result.getContent().get(0).isVegetarian());
+    }
 
-        var filteredRecipes = recipeSearchService.searchFilteredRecipes(isVegetarian,servings,
-                includedIngredients, excludedIngredients,searchText);
+    @Test
+    public void testFilteredRecipesByServings() {
 
-        assertEquals(1, filteredRecipes.size());
-        assertEquals("Test Recipe 1", filteredRecipes.get(0).getName());
-        assertEquals(servings,filteredRecipes.get(0).getServings());
-        assertTrue(filteredRecipes.get(0).isVegetarian());
+    var servings = 4;
+        var mockRecipes = Collections.singletonList(getMockRecipes().get(0));
+        var page = new PageImpl<>(mockRecipes);
+
+        when(recipeRepository.findFilteredRecipes(
+                null, servings, null, null,null,PageRequest.of(0, 20)))
+                .thenReturn(page);
+        var result = recipeSearchService.searchFilteredRecipes(null
+                , null, servings, null, null, PageRequest.of(0, 20));
+
+        assertNotNull(result.getContent());
+        assertEquals(1, result.getContent().size());
+        assertEquals("Test Recipe 1", result.getContent().get(0).getName());
+        assertEquals(servings,result.getContent().get(0).getServings());
 
     }
+
+@Test
+public void testFilteredRecipesByInstruction() {
+
+    var searchText = "oven";
+    var mockRecipes = Collections.singletonList(getMockRecipes().get(1));
+    var page = new PageImpl<>(mockRecipes);
+
+    when(recipeRepository.findFilteredRecipes(
+            null, null, null, null,searchText,PageRequest.of(0, 20)))
+            .thenReturn(page);
+    var result = recipeSearchService.searchFilteredRecipes(null
+            , searchText, null, null, null, PageRequest.of(0, 20));
+
+    assertNotNull(result.getContent());
+    assertEquals("Test Recipe 2", result.getContent().get(0).getName());
+    assertTrue(result.getContent().get(0).getInstructions().contains(searchText));
+
+}
+
+@Test
+public void testFilteredRecipesByIncludedIngredients() {
+
+    var mockRecipes = getMockRecipes();
+    var includedIngredients = List.of("potato");
+    var page = new PageImpl<>(mockRecipes);
+
+    when(recipeRepository.findFilteredRecipes(
+            null, null, includedIngredients, null,null,PageRequest.of(0, 20)))
+            .thenReturn(page);
+    var result = recipeSearchService.searchFilteredRecipes(null
+            , null, null, includedIngredients, null, PageRequest.of(0, 20));
+
+    assertNotNull(result.getContent());
+    assertEquals(2, result.getContent().size());
+    assertEquals("Test Recipe 1", result.getContent().get(0).getName());
+    assertEquals("Test Recipe 2", result.getContent().get(1).getName());
+
+}
+
+@Test
+public void testFilteredRecipesByIncludedIngredients_Empty() {
+
+    var includedIngredients = List.of("potato");
+    var page = new PageImpl<>(Collections.EMPTY_LIST);
+
+    when(recipeRepository.findFilteredRecipes(
+            null, null, includedIngredients, null,null,PageRequest.of(0, 20)))
+            .thenReturn(page);
+    var result = recipeSearchService.searchFilteredRecipes(null
+            , null, null, includedIngredients, null, PageRequest.of(0, 20));
+
+    assertNotNull(result.getContent());
+    assertEquals(0, result.getContent().size());
+}
+
+@Test
+public void testFilteredRecipesByExcludesIngredients() {
+
+    var mockRecipes = getMockRecipes();
+    var excludedIngredients = List.of("lamb");
+
+    var page = new PageImpl<>(Collections.singletonList(mockRecipes.get(0)));
+
+    when(recipeRepository.findFilteredRecipes(
+            null, null, null, excludedIngredients,null,PageRequest.of(0, 20)))
+            .thenReturn(page);
+    var result = recipeSearchService.searchFilteredRecipes(null
+            , null, null, null, excludedIngredients, PageRequest.of(0, 20));
+
+    assertNotNull(result.getContent());
+    assertEquals(1, result.getContent().size());
+    assertEquals("Test Recipe 1", result.getContent().get(0).getName());
+}
+
+@Test
+public void testFilteredRecipesByExcludedIngredients_Empty() {
+    var excludedIngredients = List.of("lamb");
+    var page = new PageImpl<>(Collections.EMPTY_LIST);
+
+    when(recipeRepository.findFilteredRecipes(
+            null, null, null, excludedIngredients,null,PageRequest.of(0, 20)))
+            .thenReturn(page);
+    var result = recipeSearchService.searchFilteredRecipes(null
+            , null, null, null, excludedIngredients, PageRequest.of(0, 20));
+
+    assertNotNull(result.getContent());
+    assertEquals(0, result.getContent().size());
+}
+
+@Test
+public void testFilteredRecipesByAllCriteria() {
+    var servings = 4;
+    var isVegetarian = true;
+    var searchText = "stove";
+    var includedIngredients = List.of("potato","carrot");
+    var excludedIngredients = List.of("lamb");
+
+    var mockRecipes = getMockRecipes();
+    var page = new PageImpl<>(Collections.singletonList(mockRecipes.get(0)));
+
+    when(recipeRepository.findFilteredRecipes(
+            anyBoolean(), anyInt(), anyList(), anyList(),anyString(),any()))
+            .thenReturn(page);
+    var result = recipeSearchService.searchFilteredRecipes(isVegetarian
+            , searchText, servings, includedIngredients, excludedIngredients, PageRequest.of(0, 20));
+
+    assertNotNull(result.getContent());
+    assertEquals(1, result.getContent().size());
+    assertEquals("Test Recipe 1", result.getContent().get(0).getName());
+    assertEquals(servings,result.getContent().get(0).getServings());
+    assertTrue(result.getContent().get(0).isVegetarian());
+
+}
 
 
     private List<Recipe> getMockRecipes(){
