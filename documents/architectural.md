@@ -98,13 +98,13 @@
 
 ##### Logging and Tracing:
 
-- Use `Log4j` which comes by default with Spring boot. 
+- Application uses `Log4j` which comes by default with Spring boot. 
 - Logging in Spring Boot plays a vital role in Spring Boot applications for recording information, actions, 
   and events within the app. It is also used for monitoring the performance of an application, understanding the behavior of the application, and recognizing the issues within the application.
 
 #### Monitoring application Health:
 
-- Use `Spring boot Actuator` for Monitoring the app as gathering metrics, and understanding traffic or the state of our
+- `Spring boot Actuator` is used for Monitoring the app as gathering metrics, and understanding traffic or the state of our
  database is trivial. Actuator provides all of Spring Boot's production-ready features.
 
 ##### Code Documentation: 
