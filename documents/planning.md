@@ -1,6 +1,6 @@
 # PLANNING
 ## The following details the steps needed to create a standalone Java application for managing favorite recipes:
-> Important: Project progress can be viewed on Tracking/Agile [Recipe management project](https://github.com/users/msundlana/projects/2)
+> Important: Project progress can be viewed on Tracking/Agile board [Recipe management project](https://github.com/users/msundlana/projects/2)
 
 1. Choosing Java framework: Spring Boot for building the RESTful API. It provides easy setup, dependency 
     injection, and support for RESTful services.
