@@ -88,6 +88,7 @@
 ##### Exception Handling:
 
 - Added exception handling because it's essential to handle potential errors gracefully.
+- Added Spring Validator for bean validation.
 
 ##### Logging and Tracing:
 
@@ -95,11 +96,15 @@
 - Logging in Spring Boot plays a vital role in Spring Boot applications for recording information, actions, 
   and events within the app. It is also used for monitoring the performance of an application, understanding the behavior of the application, and recognizing the issues within the application.
 
+#### Monitoring application Health:
+
+- Use `Spring boot Actuator` for Monitoring the app as gathering metrics, and understanding traffic or the state of our
+ database is trivial. Actuator provides all of Spring Boot's production-ready features.
+
 ##### Code Documentation: 
 
 - `SpringDoc OpenAPI` is used together with `Swagger_UI API` to generate document and UI clients can connect
   with it to auto generate services to reduce API contract violation
-
 
 > Overall, these architectural choices aim to provide a solid foundation for building a production-ready 
 > Java application for managing favorite recipes. The combination of Spring Boot, PostgreSQL, thorough testing, 
