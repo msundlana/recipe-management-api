@@ -127,7 +127,7 @@ Tests are annotation with @Test .
 
 To run all tests simply execute `mvn test` from the project root. Alternatively if you are using Intellij right-click on the respective xml file and select run.
 
-### How do I get set up? (Sections still to be completed)
+### How do I get set up? (Sections to be completed)
 
 - Summary of set up
 - Configuration
