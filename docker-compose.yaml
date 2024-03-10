@@ -9,15 +9,23 @@ services:
       POSTGRES_PASSWORD: admin
     ports:
       - "5432:5432"
+    networks:
+      - recipe-network
     volumes:
       - pgdata:/var/lib/postgresql/data
 
   recipe-management:
     image: msundlana/recipe-management-api:0.0.1-SNAPSHOT
+    mem_limit: 700m
     ports:
       - "8080:8080"
+    networks:
+      - recipe-network
     depends_on:
       - recipe-postgres
+
+networks:
+  recipe-network:
 
 volumes:
   pgdata:

@@ -1,7 +1,10 @@
 # Architectural Choices Documentation
 
 ### The Recipe Entity ER_DIAGRAM
-<img src="recipe_er_diagram.png" width="600"/>
+<img src="images/recipe_er_diagram.png" width="600"/>
+
+### The Recipe Architectural DIAGRAM
+<img src="images/recipe_architectural_diagram.png" width="600"/>
 
 ## Framework:
 
@@ -27,6 +30,15 @@
 
 - `H2` in memory database for testing. Carrying out CRUD operations with H2 within Spring Boot is the same as with other SQL databases.
   It is easy to set up and use, and it provides a fast and reliable way to test your code.
+
+#### Database Migration
+
+##### **Choice:** 
+
+###### Reasoning:
+
+- `Liquibase` for automatic database migrations. It is a database schema change management solution that enables you to revise
+    and release database changes faster and safer from development to production
 
 ## Testing Strategy:
 
