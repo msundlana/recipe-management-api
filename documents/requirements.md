@@ -7,11 +7,11 @@ Create a standalone java application which allows users to manage their favourit
 3. Specific ingredients (either include or exclude)
 4. Text search within the instructions.
    For example, the API should be able to handle the following search requests:
-   • All vegetarian recipes
-   • Recipes that can serve 4 persons and have “potatoes” as an ingredient
-   • Recipes without “salmon” as an ingredient that has “oven” in the instructions.
+   - All vegetarian recipes
+   - Recipes that can serve 4 persons and have “potatoes” as an ingredient
+   - Recipes without “salmon” as an ingredient that has “oven” in the instructions.
    Requirements
-   Please ensure that we have some documentation about the architectural choices and also how to run the application. The project is expected to be delivered as a GitHub (or any other public git hosting) repository URL.
+   Please ensure that there is some documentation about the architectural choices and also how to run the application. The project is expected to be delivered as a GitHub (or any other public git hosting) repository URL.
    All these requirements needs to be satisfied:
 1. It must be a REST application implemented using Java (use a framework of your choice)
 2. Your code should be production-ready.
