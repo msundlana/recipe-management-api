@@ -89,12 +89,16 @@
 
 - Added exception handling because it's essential to handle potential errors gracefully.
 
-##### Logging and Tracing
+##### Logging and Tracing:
 
-- Use Log4j which comes by default with Spring boot. 
+- Use `Log4j` which comes by default with Spring boot. 
 - Logging in Spring Boot plays a vital role in Spring Boot applications for recording information, actions, 
   and events within the app. It is also used for monitoring the performance of an application, understanding the behavior of the application, and recognizing the issues within the application.
 
+##### Code Documentation: 
+
+- `SpringDoc OpenAPI` is used together with `Swagger_UI API` to generate document and UI clients can connect
+  with it to auto generate services to reduce API contract violation
 
 
 > Overall, these architectural choices aim to provide a solid foundation for building a production-ready 
