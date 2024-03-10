@@ -1,4 +1,6 @@
-Objective
+# Requirements
+
+## Objective
 Create a standalone java application which allows users to manage their favourite recipes. It should allow adding, updating, removing and fetching recipes. Additionally users should be able to filter available recipes based on one or more of the following criteria:
 1. Whether or not the dish is vegetarian
 2. The number of servings
