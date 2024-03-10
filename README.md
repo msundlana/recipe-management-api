@@ -69,7 +69,7 @@ To run the api you will need to do the following
        - To run the docker image, run `docker-compose up -d`
    5. The application will start
    6. Once the App is running, you can access it by navigating to `http://localhost:8080` in your web browser. 
-   7. Once the App is running you can view the OpenAPI Doc at `http://localhost:8000/swagger-ui/index.html`
+   7. Once the App is running you can view the OpenAPI Doc at `http://localhost:8080/swagger-ui/index.html`
    8. Once the App is running you can also view `http://localhost:8080/actuator`. Monitoring our app, gathering
        metrics, and understanding traffic or the state of our database is trivial.
        The actuator mainly exposes operational information about the running application — health, metrics, info, dump,
