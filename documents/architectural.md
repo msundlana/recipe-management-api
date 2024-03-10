@@ -73,6 +73,14 @@
 - DAO acts as a bridge between the database and the application. DTO acts as a data store from where the data is received
   and transferred to different layers i.e., to the DAO application
 
+##### Exception Handling:
+
+- Added exception handling because it's essential to handle potential errors gracefully.
+
+##### Logging and Tracing
+
+
+
 
 
 > Overall, these architectural choices aim to provide a solid foundation for building a production-ready 

@@ -5,25 +5,22 @@ import com.github.msundlana.recipemanagementservice.services.RecipeSearchService
 import com.github.msundlana.recipemanagementservice.utilities.RecipeHelper;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 
 @RestController
 @RequestMapping("${api.base}/recipes/search")
 public class RecipeSearchController {
+    private static final Logger logger = LoggerFactory.getLogger(RecipeSearchController.class);
     @Autowired
     private RecipeSearchService recipeSearchService;
 
@@ -37,11 +34,13 @@ public class RecipeSearchController {
             @RequestParam(required = false, defaultValue = "0") @PositiveOrZero Integer page,
             @RequestParam(required = false, defaultValue = "20") @Positive Integer pageSize,
             @RequestParam(required = false) String... sort) {
+        logger.info("Received request to find filtered recipes");
 
         var filteredRecipes = recipeSearchService.searchFilteredRecipes(
                 vegetarian, searchText, servings, includedIngredients,
                 excludedIngredients, RecipeHelper.getPageRequest(page,pageSize,sort));
 
+        logger.info("Filtered recipes successfully retrieved");
         return new ResponseEntity<>(filteredRecipes, HttpStatus.OK);
     }
 
