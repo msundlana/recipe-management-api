@@ -2,6 +2,9 @@
 
 A standalone Java application for managing favorite recipes.
 
+View [`Project Requirements Document`](./documents/requirements.md), [`Project Planning Document`](./documents/requirements.md)
+[`Architectural Choice Document`](./documents/architectural.md) and [`HELP resource Document`](./HELP.md)
+
 # README
 
 This README would normally document whatever steps are necessary to get the application up and running.
