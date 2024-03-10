@@ -88,7 +88,7 @@
 ##### Exception Handling:
 
 - Added exception handling because it's essential to handle potential errors gracefully.
-- Added Spring Validator for bean validation.
+- The `Spring boot Validator` does bean validation for the application.
 
 ##### Logging and Tracing:
 
