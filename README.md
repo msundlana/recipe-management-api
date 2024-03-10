@@ -50,7 +50,7 @@ To run the api you will need to do the following
         - Follow the instruction in [`database-setup.md`](./docker/database/database-setup.md)
 2. Setting up the application
     1. Install dependencies using `mvn clean install` or `mvn clean install -P ${PROFILE_NAME}`
-       ${PROFILE_NAME} = dev|prod|test
+       `${PROFILE_NAME} = dev|prod|test`
     2. If running through the terminal
         1. Build the application using `mvn package`
         2. Start the app
@@ -65,7 +65,7 @@ To run the api you will need to do the following
        - Replace `your_username` and `your_password`with your actual database credentials and
        - Update the `localhost:5432` with the correct host address. Also, ensure that the PostgreSQL server is running.
        - To build the API docker image, run  `mvn spring-boot:build-image -P ${PROFILE_NAME}`
-         ${PROFILE_NAME} = dev|prod|test
+         `${PROFILE_NAME} = dev|prod|test`
        - To run the docker image, run `docker-compose up -d`
    5. The application will start
    6. Once the App is running, you can access it by navigating to `http://localhost:8080` in your web browser. 
