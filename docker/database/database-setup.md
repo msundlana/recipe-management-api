@@ -11,4 +11,5 @@
 
 4. Once the image is built, run the following command to start a container using the image:
    `docker run -d -p 5432:5432 --name recipe-postgres recipe-postgres`
+5. Optionally you can also start a container using image with docker_compose `docker-compose up -d` 
     
